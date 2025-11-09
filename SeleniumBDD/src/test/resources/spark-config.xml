@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <viewOrder>dashboard,test,category,log</viewOrder>
+    <theme>STANDARD</theme>
+    <encoding>utf-8</encoding>
+</configuration>

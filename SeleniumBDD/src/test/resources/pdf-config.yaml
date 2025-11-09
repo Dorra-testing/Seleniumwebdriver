@@ -1,0 +1,26 @@
+# Display options
+displayFeature: true
+displayScenario: true
+displayDetailed: true
+displayAttached: true
+displayExpanded: false
+
+# Dashboard
+dashboardConfig:
+  title: "Cucumber Test Report"
+
+# Detailed Feature & Scenario
+detailedFeatureConfig:
+  featureNameColor: "#000000"
+
+detailedScenarioConfig:
+  featureNameColor: "#000000"
+  scenarioNameColor: "#000000"
+
+detailedStepHookConfig:
+  stepTextColor: "#000000"
+  stepBackgroundColor: "#FFFFFF"
+  hookTextColor: "#000000"
+  hookBackgroundColor: "#FFFFFF"
+  errorMsgColor: "#FF0000"
+  logMsgColor: "#0000FF"

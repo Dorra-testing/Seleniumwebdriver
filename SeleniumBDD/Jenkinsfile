@@ -1,0 +1,33 @@
+pipeline {
+    agent any
+
+    tools {
+        maven 'Maven_3.9'   // Name of your Maven installation in Jenkins
+        jdk 'jdk8'           // Name of your JDK installation in Jenkins
+    }
+
+    stages {
+        stage('Checkout Code') {
+            steps {
+                git branch: 'main', url: 'https://github.com/Dorra-testing/<Seleniumwebdriver>.git'
+            }
+        }
+
+        stage('Build and Run Tests') {
+            steps {
+                echo 'Running Selenium BDD Tests...'
+                bat 'mvn clean test'
+            }
+        }
+
+        stage('Publish Extent Report') {
+            steps {
+                publishHTML(target: [
+                    reportDir: 'report/html',
+                    reportFiles: 'reportTest.html',
+                    reportName: 'Extent Report'
+                ])
+            }
+        }
+    }
+}

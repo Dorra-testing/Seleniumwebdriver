@@ -17,6 +17,9 @@ extent-report/
 .metadata/
 .idea/
 *.iml
+SeleniumBDD/.classpath
+SeleniumBDD/.project
+SeleniumBDD/.settings/
 
 # OS files
 .DS_Store

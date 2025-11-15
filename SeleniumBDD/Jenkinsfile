@@ -16,16 +16,14 @@ pipeline {
         }
 
         stage('Build & Test') {
-            steps {
-                // Affiche les versions Java et Maven
-                bat 'java -version'
-                bat 'mvn -version'
-
-                // Exécute la feature spécifique via le runner
-                bat 'mvn clean test -Dcucumber.options="--glue src/test/java --tags @YourTagName"'
-                // Remplace @YourTagName par le tag ou le chemin de ta feature
-            }
+    steps {
+        dir('SeleniumBDD') {
+            bat 'java -version'
+            bat 'mvn -version'
+            bat 'mvn clean test -Dcucumber.options="--glue src/test/java --tags @YourTagName"'
         }
+    }
+}
 
         stage('Generate Report') {
             steps {

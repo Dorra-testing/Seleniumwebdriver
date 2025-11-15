@@ -1,6 +1,12 @@
 pipeline {
     agent any
 
+    environment {
+        MAVEN_HOME = tool 'Maven3'   // Nom Maven configuré dans Jenkins
+        JAVA_HOME  = tool 'JDK8'     // Nom JDK configuré dans Jenkins
+        PATH      = "${JAVA_HOME}\\bin;${MAVEN_HOME}\\bin;%PATH%"
+    }
+
     stages {
 
         stage('Checkout') {
@@ -12,17 +18,38 @@ pipeline {
 
         stage('Build & Test') {
             steps {
-                dir('SeleniumBDD') {
-                    sh 'mvn clean test'
-                }
+                echo 'Lancement des tests Selenium + Cucumber'
+                bat "\"${MAVEN_HOME}\\bin\\mvn\" clean test"
             }
         }
 
+        stage('Archive Reports') {
+            steps {
+                echo 'Archivage des rapports et screenshots'
+                // Archiver ExtentReports
+                archiveArtifacts artifacts: 'SeleniumBDD/target/ExtentReports/*.html', fingerprint: true
+                // Archiver screenshots
+                archiveArtifacts artifacts: 'SeleniumBDD/screenshots/**/*.png', fingerprint: true
+                // Archiver Cucumber JSON (si généré)
+                archiveArtifacts artifacts: 'SeleniumBDD/test-output/cucumber/*.json', fingerprint: true
+            }
+        }
+
+        stage('Publish HTML Reports') {
+            steps {
+                echo 'Publication des rapports HTML'
+                publishHTML([
+                    reportDir: 'SeleniumBDD/target/ExtentReports',
+                    reportFiles: 'report.html',
+                    reportName: 'Extent Report'
+                ])
+            }
+        }
     }
 
     post {
         always {
-            archiveArtifacts artifacts: 'SeleniumBDD/target/**/*.html', fingerprint: true
+            echo 'Pipeline terminé'
         }
     }
 }

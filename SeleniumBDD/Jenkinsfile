@@ -11,6 +11,7 @@ pipeline {
 
         stage('Checkout') {
             steps {
+                echo 'Récupération du code depuis GitHub'
                 git branch: 'main',
                     url: 'https://github.com/Dorra-testing/Seleniumwebdriver.git'
             }
@@ -18,19 +19,19 @@ pipeline {
 
         stage('Build & Test') {
             steps {
-                echo 'Lancement des tests Selenium + Cucumber'
+                echo 'Compilation et exécution des tests Selenium + Cucumber'
                 bat "\"${MAVEN_HOME}\\bin\\mvn\" clean test"
             }
         }
 
-        stage('Archive Reports') {
+        stage('Archive Reports & Screenshots') {
             steps {
                 echo 'Archivage des rapports et screenshots'
                 // Archiver ExtentReports
                 archiveArtifacts artifacts: 'SeleniumBDD/target/ExtentReports/*.html', fingerprint: true
                 // Archiver screenshots
                 archiveArtifacts artifacts: 'SeleniumBDD/screenshots/**/*.png', fingerprint: true
-                // Archiver Cucumber JSON (si généré)
+                // Archiver Cucumber JSON si présent
                 archiveArtifacts artifacts: 'SeleniumBDD/test-output/cucumber/*.json', fingerprint: true
             }
         }
@@ -41,7 +42,10 @@ pipeline {
                 publishHTML([
                     reportDir: 'SeleniumBDD/target/ExtentReports',
                     reportFiles: 'report.html',
-                    reportName: 'Extent Report'
+                    reportName: 'Extent Report',
+                    keepAll: true,
+                    alwaysLinkToLastBuild: true,
+                    allowMissing: true
                 ])
             }
         }

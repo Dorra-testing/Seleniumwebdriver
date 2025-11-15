@@ -2,32 +2,34 @@ package DemoPackage;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.edge.EdgeDriver;
+
+import com.aventstack.extentreports.*;
+import utiles.ExtentManager;
+import utiles.ScreenshotUtils;
 
 public class BBC {
 
-	public static void main(String[] args) {//This is the entry point of every Java application — it’s where the program starts running.
-		// TODO Auto-generated method stub
-		
-		WebDriver driver=new ChromeDriver();
-		//WebDriver driver = new EdgeDriver();
-		//open URL 
-		driver.get("https://www.bbc.com/arabic/topics/cv2xyrnr8dnt");
+    public static void main(String[] args) {
 
-		String act_title = driver.getTitle();
-		
-		if (act_title.equals("أخبار - BBC News عربي"))
-			
-		{
-			System.out.println("Test Passed");
-		}
-		else
-		{
-			System.out.println("Test Failed");
-		}
-		
-		
-		
+        // Start Extent report
+        ExtentReports extent = ExtentManager.getInstance();
+        ExtentTest test = extent.createTest("BBC Title Check");
 
-	}
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.bbc.com/arabic/topics/cv2xyrnr8dnt");
+
+        String act_title = driver.getTitle();
+
+        if (act_title.equals("أخبار - BBC New عربي")) {
+            test.pass("Title is correct");
+        } else {
+            test.fail("Title incorrect");
+
+            String screenshotPath = ScreenshotUtils.takeScreenshot(driver, "BBC_Fail");
+            test.addScreenCaptureFromPath(screenshotPath);
+        }
+
+        driver.quit();
+        extent.flush(); // generate the report
+    }
 }

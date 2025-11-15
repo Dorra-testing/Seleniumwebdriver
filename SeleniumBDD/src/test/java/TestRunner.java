@@ -12,7 +12,7 @@ import io.cucumber.junit.CucumberOptions.SnippetType;;
 				"json:target/cucumber-report.json",
 				"com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter:" // needed for PDF
 				},
-		tags="@TestloginValide",
+		tags="@authentificationValide",
 		snippets=SnippetType.CAMELCASE,
 		monochrome =true		
 		)

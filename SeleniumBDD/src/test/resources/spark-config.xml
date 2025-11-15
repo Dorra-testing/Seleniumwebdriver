@@ -3,4 +3,11 @@
     <viewOrder>dashboard,test,category,log</viewOrder>
     <theme>STANDARD</theme>
     <encoding>utf-8</encoding>
+
+    <!-- Screenshot configuration -->
+    <screenshot>
+        <enable>true</enable>
+        <captureFailedSteps>true</captureFailedSteps>
+        <captureAllSteps>true</captureAllSteps>
+    </screenshot>
 </configuration>

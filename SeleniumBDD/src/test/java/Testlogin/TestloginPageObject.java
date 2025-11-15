@@ -10,6 +10,7 @@ public class TestloginPageObject {
 	public final String PASSWORD_NAME ="password";
 	public final String SUBMITBUTTON_XPATH ="//button[@id='submit']";
 	public final String HOME_XPATH ="//a[normalize-space()='Home']";
+	public final String ERROR_MESSAGE ="//div[@id='error']";
 	
 	//Anotation FindBy + Decalaration des elements
 	@FindBy(how=How.ID,using=USERNAME_ID)
@@ -23,6 +24,9 @@ public class TestloginPageObject {
 	
 	@FindBy(how=How.XPATH,using=HOME_XPATH)
 	public  WebElement Home_element;
+	
+	@FindBy(how=How.XPATH,using=ERROR_MESSAGE)
+	public  WebElement error_message;
 	
 	//Decalaration des méthodes
 	public void saisirUsername (String username) {
@@ -39,6 +43,10 @@ public class TestloginPageObject {
 	
 	public String getText(){
 		return Home_element.getText();
+	}
+	
+	public String geterrormsg(){
+		return error_message.getText();
 	}
 
 }

@@ -1,45 +1,42 @@
 package utiles;
 
-import java.io.File;
-
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
-//import org.openqa.selenium.remote.DesiredCapabilities;
 
 
 public class ChromeDriverManager extends DriverManager {
-	private ChromeDriverService chService;
 
-	@Override
-	public void startService() {
-		if (null == chService) {
-			try {
-				chService = new ChromeDriverService.Builder()
-						.usingDriverExecutable(new File("src/test/resources/drivers/chromedriver.exe")).usingAnyFreePort()
-						.build();
-				chService.start();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-	}
+    @Override
+    public void createDriver() {
+        ChromeOptions options = new ChromeOptions();
 
-	@Override
-	public void stopService() {
-		if (null != chService && chService.isRunning())
-			chService.stop();
-	}
+        // Optional: set to true for CI/CD headless, false for local debugging
+        boolean headless = false; // <-- change to true for CI/CD
+        options.setHeadless(headless);
 
-	@Override
-	public void createDriver() {
-		 System.setProperty("webdriver.chrome.driver","C:\\Automation\\My_WorkSpace\\Seleniumwebdriver\\SeleniumBDD\\src\\test\\resources\\drivers\\chromedriver.exe");
-         ChromeOptions optionsChrome = new ChromeOptions();
-         optionsChrome.addArguments("--start-maximized");
-         optionsChrome.addArguments("--disable-infobars");
-         optionsChrome.addArguments("--disable-popup-blocking");
-         optionsChrome.setAcceptInsecureCerts(true);
-         driver = new ChromeDriver(optionsChrome);
+        // Optional: start maximized
+        options.addArguments("--start-maximized");
+        options.addArguments("--disable-infobars");
+        options.addArguments("--disable-popup-blocking");
+        options.setAcceptInsecureCerts(true);
 
-	}
+        // Path to chromedriver.exe (adjust if needed)
+        System.setProperty("webdriver.chrome.driver",
+                "src/test/resources/drivers/chromedriver.exe");
+
+        // Assign to the inherited driver field
+        driver = new ChromeDriver(options);
+    }
+
+    @Override
+    public void startService() {
+        // Not strictly needed with WebDriverManager, can implement if required
+    }
+
+    @Override
+    public void stopService() {
+        if (driver != null) {
+            driver.quit();
+        }
+    }
 }

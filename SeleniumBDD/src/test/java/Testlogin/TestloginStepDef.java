@@ -7,21 +7,22 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
+import utiles.Setup;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 public class TestloginStepDef {
 	WebDriver driver = new ChromeDriver();
-	WebDriverWait wait = new WebDriverWait(driver,2);
+	WebDriverWait wait = new WebDriverWait(driver, 2);
 	public TestloginPageObject LoginPO = new TestloginPageObject();
-		
+
 	public TestloginStepDef() {
-		PageFactory.initElements(driver,LoginPO);
+		driver = Setup.driver;
+		PageFactory.initElements(driver, LoginPO);
 
 	}
-	
+
 	@Given("I visit the login page")
 	public void I_visit_the_login_page() {
 		driver.get("https://practicetestautomation.com/practice-test-login/");
@@ -41,7 +42,7 @@ public class TestloginStepDef {
 
 	@When("I click on the button Submit")
 	public void I_click_on_the_button_submit() {
-		wait.until(ExpectedConditions.elementToBeClickable(By.xpath(LoginPO.SUBMITBUTTON_XPATH))); 
+		wait.until(ExpectedConditions.elementToBeClickable(By.xpath(LoginPO.SUBMITBUTTON_XPATH)));
 		LoginPO.clickLoginButton();
 	}
 
@@ -51,5 +52,23 @@ public class TestloginStepDef {
 		Assert.assertEquals(resultatObtenu, resultatAttendu);
 	}
 
+	@Then("I will receive the following message {string} s affiche")
+	public void i_will_receive_the_following_message_s_affiche(String ExpectedMessage) {
+		String ActualMessage = LoginPO.geterrormsg();
+		switch (ExpectedMessage) {
+		case "Your password is invalid!":
 
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(LoginPO.ERROR_MESSAGE)));
+			Assert.assertEquals(ExpectedMessage, ActualMessage);
+
+			break;
+
+		case "Your username is invalid!":
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(LoginPO.ERROR_MESSAGE)));
+			Assert.assertEquals(ExpectedMessage, ActualMessage);
+
+			break;
+		}
+
+	}
 }

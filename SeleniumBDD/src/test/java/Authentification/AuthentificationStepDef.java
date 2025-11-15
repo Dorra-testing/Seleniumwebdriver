@@ -1,56 +1,57 @@
 package Authentification;
-import java.io.IOException;
+
 import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
+
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import utiles.CommonMethods;
-import utiles.Setup;
 import utiles.WaitMethods;
+import utiles.Setup;
 public class AuthentificationStepDef {
-	// Declaration des variables
-	public WebDriver driver;
-	public AuthentificationPageObject authPageObject = new AuthentificationPageObject();
-	public CommonMethods comm = new CommonMethods();
-	public WaitMethods wait = new WaitMethods();
-	// Declaration des constrecteur de la classe
-	public AuthentificationStepDef() {
-		driver = Setup.driver;
-		PageFactory.initElements(driver, AuthentificationPageObject.class);
-		//PageFactory.initElements(driver, authPageObject);=> if we will use it remove static from public static WebElement password_Field ;
+	
+	
+	
+	// Declaration des variables 
+	public WebDriver driver ;
+	public  AuthentificationPageObject  AuthPageObject = new AuthentificationPageObject();
+	public WaitMethods wait = new  WaitMethods();
 
-	}// initialliser
-	@Given("je me connecte sur l'application")
-	//public void means the method can be called from anywhere and it doesn’t return any result — it just performs an action.
-	public void je_me_connecte_sur_l_application() /*throws IOException*/ {
-		// Write code here that turns the phrase above into concrete actions
-		//comm.openURLWithConfigFile("urlTest");
-		driver.get("https://demowebshop.tricentis.com/login");
+	//Declaration des constrecteur de la classe
+	public AuthentificationStepDef () {
+		driver = Setup.driver;                             // hné nasta3mlou le driver li initialize fi Setup
+		PageFactory.initElements(driver, AuthPageObject);	
 	}
-	@When("je saisis mon email {string}")
-	public void je_saisis_mon_email(String email) {
-		wait.explicitWaitUntilPresenceOfElementLocatedXpath(driver, authPageObject.Email_XPATH, 10);
-		authPageObject.saisirMonEmail(email);
+	
+	@Given("je me connecte sur l'application")
+	public void je_me_connecte_sur_l_application() {
+		driver.get("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login");
+	}
+
+	@When("je saisis le username {string}")
+	public void je_saisis_le_username(String username) {
+		wait.explicitWaitUntilPresenceOfElementLocatedXpath(driver, AuthPageObject.USERNAME_XPATH,20);
+		AuthPageObject.saisirUsername(username);
 	}
 
 	@When("je saisis le password {string}")
 	public void je_saisis_le_password(String password) {
-		wait.explicitWaitUntilPresenceOfElementLocatedXpath(driver, authPageObject.PASSWORD_XPATH, 10);
-		authPageObject.saisirPassword(password);
+		wait.explicitWaitUntilPresenceOfElementLocatedXpath(driver, AuthPageObject.PASSWORD_XPATH,10);
+		AuthPageObject.saisirPassword(password);
 	}
 
 	@When("je clique sur le boutton login")
 	public void je_clique_sur_le_boutton_login() {
-		wait.explicitWaitUntilButtonIsClickableXpath(driver, authPageObject.Button_XPATH, 20);
-		authPageObject.cliquerLogin();	
-	}
-	@Then("je me rederige vers la page accueill et {string} s affiche")
-	public void je_me_rederige_vers_la_page_accueill_et_s_affiche(String resultatAttendu) {
-		String resultatObtenu = authPageObject.getDashboard();
-		Assert.assertEquals(resultatObtenu, resultatAttendu);
+		wait.explicitWaitUntilButtonIsClickableXpath(driver, AuthPageObject.Button_XPATH,10);
+		AuthPageObject.cliquerLogin();
 	}
 
+	@Then("je me rederige vers la page accueill et {string} s affiche")
+	public void je_me_rederige_vers_la_page_accueill_et_s_affiche(String resultatAttendu) {
+		wait.explicitWaitUntilButtonIsClickableXpath(driver, AuthPageObject.Dashboard_XPATH,10);
+		String resultatObtenu = AuthPageObject.getDashboard();
+		Assert.assertEquals(resultatObtenu, resultatAttendu);
+
+	}
 }

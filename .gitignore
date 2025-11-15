@@ -7,6 +7,11 @@
 # Build folders
 bin/
 target/
+test-output/
+
+# Screenshots and reports
+screenshots/
+extent-report/
 
 # IDE folders
 .metadata/
@@ -16,3 +21,6 @@ target/
 # OS files
 .DS_Store
 Thumbs.db
+
+# Cucumber reports
+*.json
